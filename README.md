@@ -7,8 +7,8 @@
 sudo apt-get updates
 sudo apt-get upgrade
 
-sudo apt-get install pyhton3-pip
-sudo apt-get install pyhton3-venv
+sudo apt-get -y install pyhton3-pip
+sudo apt-get -y install pyhton3-venv
 ```
 
 * clone repo, create / activate virtual environment & install reqs
@@ -25,7 +25,7 @@ pip install -r requirements.txt
 * Install nginx
 
 ```bash
-sudo apt-get install nginx
+sudo apt-get -y install nginx
 ```
 
 * update nginx configuration to proxy to localhost
@@ -95,7 +95,7 @@ User=ubuntu
 Group=www-data
 WorkingDirectory={absolute path to your repo directory}
 Environment="PATH={absolute path to your repo directory}/venv/bin"
-ExecStart={absolute path to your repo directory}/venv/bin/gunicorn -w 4 -k uvicorn.workers.Uvicorn>
+ExecStart={absolute path to your repo directory}/venv/bin/gunicorn app:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
 
 [Install]
 WantedBy=multi-user.target
@@ -113,7 +113,7 @@ User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/caesar
 Environment="PATH=/home/ubuntu/caesar/venv/bin"
-ExecStart=/home/ubuntu/caesar/venv/bin/gunicorn -w 4 -k uvicorn.workers.Uvicorn>
+ExecStart=/home/ubuntu/caesar/venv/bin/gunicorn app:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
 
 [Install]
 WantedBy=multi-user.target
@@ -130,7 +130,7 @@ sudo systemctl start project_name
 sudo systemctl enable project_name
 
 # to stop the server
-sudo systemctl start project_name
+sudo systemctl stop project_name
 ```
 
 * Done.
